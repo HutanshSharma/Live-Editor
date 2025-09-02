@@ -41,7 +41,7 @@ export default function Homepage() {
 
   return (
     <>
-    <Modal heading={'Warning'} description={"You can't copy, paste, or use contextmenu"} btntext={'Confirm'} ref={cheatingModal}/>
+    <Modal heading={'Warning'} description={"You can't copy, paste, or use context menu"} btntext={'Confirm'} ref={cheatingModal}/>
     <Modal heading={'Warning'} description={"You can't use Developer Tools or inspect elements"} btntext={'Confirm'} ref={inspectModal}/>
     <div className="min-h-screen text-white" style={{background: 'linear-gradient(180deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%)'}}>
       <header className="container mx-auto px-6 py-8">
