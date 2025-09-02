@@ -4,15 +4,25 @@ import { createPortal } from "react-dom"
 export default function({heading,description,ref,btntext,func}){
     useEffect(() => {
         const dialog = ref.current;
+        const handler = (e)=>{
+            e.preventDefault()
+        }
+        const enterhandler= (e)=>{
+            if(e.key === 'Enter'){
+                e.preventDefault()
+            }
+        }
         if(dialog){
-            dialog.addEventListener("cancel",(e)=>e.preventDefault());
+            dialog.addEventListener("cancel",handler);
+            dialog.addEventListener("keydown",enterhandler);
         }
         return () => {
             if (dialog) {
-                dialog.removeEventListener("cancel",(e)=>e.preventDefault());
+                dialog.removeEventListener("cancel",handler);
+                dialog.removeEventListener("keydown",enterhandler);
             }
         };
-    }, []);
+    }, [ref]);
 
     return createPortal(
         <dialog ref={ref} className="backdrop:bg-stone-900/90 bg-[rgba(11,11,11,0.8)] p-4 m-auto rounded-md shadow-md border-0 text-gray-300">
