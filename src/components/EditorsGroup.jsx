@@ -1,4 +1,4 @@
-import CodePlace from "./codeplace"
+import CodePlace from "./CodePlace"
 import { useState } from "react"
 
 export default function EditorsGroup({handleCodeChange,htmlRef,cssRef,jsRef,currentdata,modal}){
