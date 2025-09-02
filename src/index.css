@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+
+.bitcount-prop-single {
+  font-family: "Bitcount Prop Single", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "slnt" 0,
+    "CRSV" 0.5,
+    "ELSH" 0,
+    "ELXP" 0;
+}
+
+.bungee-regular {
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+    background: linear-gradient(180deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+}
+
+.html {
+    background: linear-gradient(135deg, #e34c26, #f06529);
+    color: white;
+    position: absolute;
+    top:2%;
+}
+
+.css {
+    background: linear-gradient(135deg, #1572b6, #33a9dc);
+    color: white;
+    position: absolute;
+    top:35%
+}
+
+.javascript {
+    background: linear-gradient(135deg, #f7df1e, #f0db4f);
+    color: #333;
+    position: absolute;
+    top:68%
+}
+
+.preview {
+    background: linear-gradient(135deg, #3f5cde, #5a2f84);
+}
+
+.expand-in {
+    height:30%;
+    opacity: 1;
+    transition: height 500ms ease-in-out,top 500ms ease-in-out,opacity 1s ease-in-out;
+}
+
+.expand-in.active {
+    height: 95%;
+    top: 2%;
+    z-index: 2;
+}
+
+.expand-in.activefade {
+    opacity: 0;
+}
