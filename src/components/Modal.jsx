@@ -8,7 +8,7 @@ export default function({heading,description,ref,btntext,func}){
             e.preventDefault()
         }
         const enterhandler= (e)=>{
-            if(e.key === 'Enter'){
+            if(e.key === 'Enter' || e.key === 'Escape'){
                 e.preventDefault()
             }
         }
