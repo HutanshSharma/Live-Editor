@@ -63,6 +63,8 @@ export default function CodeEditor() {
   useEffect(()=>{
     if(isFull === false){
       modal.current.showModal()
+      if(cheatingModal.current.open) cheatingModal.current.close()
+      if(inspectModal.current.open) inspectModal.current.close()
       setisFull(true)
     }
   },[isFull])
@@ -90,10 +92,14 @@ export default function CodeEditor() {
         event.key.toLowerCase() === 'x')) {
         event.preventDefault();
         cheatingModal.current.showModal()
+        if(inspectModal.current.open) inspectModal.current.close()
+        if(modal.current.open) modal.current.close()
       }
       else if((event.key === 'F12') || ((event.ctrlKey || event.metaKey) && (event.shiftKey) || event.altKey)) {
         event.preventDefault();
         inspectModal.current.showModal()
+        if(cheatingModal.current.open) cheatingModal.current.close()
+        if(modal.current.open) modal.current.close()
       }
       else if ((event.ctrlKey || event.metaKey) &&
        (event.key.toLowerCase() === 'i' ||
@@ -102,8 +108,11 @@ export default function CodeEditor() {
       )){
         event.preventDefault();
         inspectModal.current.showModal()
+        if(cheatingModal.current.open) cheatingModal.current.close()
+        if(modal.current.open) modal.current.close()
       }
       };
+
       window.addEventListener('keydown', handler);
       return () => {
         window.removeEventListener('keydown', handler);
@@ -114,6 +123,8 @@ export default function CodeEditor() {
     const handler=(e)=>{
       e.preventDefault();
       cheatingModal.current.showModal()
+      if(inspectModal.current.open()) cheatingModal.current.close()
+      if(modal.current.open()) modal.current.close()
     }
     window.addEventListener('contextmenu', handler);
     return () => {
