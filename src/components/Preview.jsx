@@ -14,7 +14,6 @@ export default function Preview({code, modal}){
 
             const handler = (e) => {
             e.preventDefault();
-            console.log("Right click detected inside iframe");
             modal.current.showModal();
             };
 
