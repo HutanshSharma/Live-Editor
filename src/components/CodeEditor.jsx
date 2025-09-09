@@ -4,6 +4,7 @@ import { generateCode, defaultcode, defaultdata} from '../generateCode';
 import Preview from './Preview';
 import Header from './Header';
 import Modal from './Modal';
+import { useDevToolsDetection } from '../hooks/useDevToolsDetection';
 
 export default function CodeEditor() {
   const htmlRef = useRef();
@@ -12,6 +13,7 @@ export default function CodeEditor() {
   const modal = useRef();
   const cheatingModal = useRef();
   const inspectModal = useRef();
+  const reloadModal = useRef();
   
   const initialCode = useMemo(()=>{
     const stored = JSON.parse(sessionStorage.getItem('code'));
@@ -23,6 +25,7 @@ export default function CodeEditor() {
   
   const [code, setCode] = useState(initialCode);
   const [ isFull, setisFull ] = useState(false)
+  const areDevToolsOpen = useDevToolsDetection()
 
   const enterFullscreen = useCallback(function enterFullscreen(){
     const element=document.documentElement;
@@ -69,6 +72,14 @@ export default function CodeEditor() {
     }
   },[isFull])
 
+  useEffect(()=>{
+    if(areDevToolsOpen===true){
+      reloadModal.current.showModal()
+      if(cheatingModal.current.open) cheatingModal.current.close()
+      if(inspectModal.current.open) inspectModal.current.close()
+    }
+  },[areDevToolsOpen])
+
   function handleCodeChange(){
     const data={
       html:htmlRef.current.getValue(),
@@ -93,13 +104,11 @@ export default function CodeEditor() {
         event.preventDefault();
         cheatingModal.current.showModal()
         if(inspectModal.current.open) inspectModal.current.close()
-        if(modal.current.open) modal.current.close()
       }
       else if((event.key === 'F12') || ((event.ctrlKey || event.metaKey) && (event.shiftKey) || event.altKey)) {
         event.preventDefault();
         inspectModal.current.showModal()
         if(cheatingModal.current.open) cheatingModal.current.close()
-        if(modal.current.open) modal.current.close()
       }
       else if ((event.ctrlKey || event.metaKey) &&
        (event.key.toLowerCase() === 'i' ||
@@ -109,7 +118,6 @@ export default function CodeEditor() {
         event.preventDefault();
         inspectModal.current.showModal()
         if(cheatingModal.current.open) cheatingModal.current.close()
-        if(modal.current.open) modal.current.close()
       }
       };
 
@@ -136,6 +144,7 @@ export default function CodeEditor() {
     <Fragment>
       <Header />
       <Modal heading={'Permission'} description={'You have to enter fullscreen to continue'} btntext={'Allow'} ref={modal} func={enterFullscreen} />
+      <Modal heading={'Permission'} description={'You tried using devtools therefore you have to reload'} btntext={'Reload'} ref={reloadModal} func={()=>{location.reload()}} />
       <Modal heading={'Warning'} description={"You can't copy, paste, or use context menu"} btntext={'Confirm'} ref={cheatingModal}/>
       <Modal heading={'Warning'} description={"You can't use developer Tools or inspect elements"} btntext={'Confirm'} ref={inspectModal}/>
       <div className='flex w-screen h-11/12 gap-20' >
