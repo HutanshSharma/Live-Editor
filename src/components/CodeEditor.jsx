@@ -168,7 +168,7 @@ export default function CodeEditor() {
     <Fragment>
       <Header />
       <Modal heading={'Permission'} description={'You have to enter fullscreen to continue'} btntext={'Allow'} ref={modal} func={enterFullscreen} />
-      <Modal heading={'Permission'} description={'You tried using devtools therefore you have to reload'} btntext={'Reload'} ref={reloadModal} func={()=>{location.reload()}} />
+      <Modal heading={'Permission'} description={'Close the Developer Tools and Reload'} btntext={'Reload'} ref={reloadModal} func={()=>{location.reload()}} />
       <Modal heading={'Warning'} description={"You can't copy, paste, or use context menu"} btntext={'Confirm'} ref={cheatingModal}/>
       <Modal heading={'Warning'} description={"You can't use developer Tools or inspect elements"} btntext={'Confirm'} ref={inspectModal}/>
       <Modal heading={'Warning'} description={"It seems like you tried pasting large chunk of code. Remove the pasted part or you can't code here"} btntext={'Confirm'} ref={preventpaste}/>
