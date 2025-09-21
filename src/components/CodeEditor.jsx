@@ -16,6 +16,7 @@ export default function CodeEditor() {
   const cheatingModal = useRef();
   const inspectModal = useRef();
   const reloadModal = useRef();
+  const preventpaste = useRef()
 
   const initialCode = useMemo(()=>{
     const stored = JSON.parse(sessionStorage.getItem('code'));
@@ -76,13 +77,13 @@ export default function CodeEditor() {
     }
   },[isFull])
 
-  useEffect(()=>{
-    if(areDevToolsOpen===true){
-      reloadModal.current.showModal()
-      if(cheatingModal.current.open) cheatingModal.current.close()
-      if(inspectModal.current.open) inspectModal.current.close()
-    }
-  },[areDevToolsOpen])
+  // useEffect(()=>{
+  //   if(areDevToolsOpen===true){
+  //     reloadModal.current.showModal()
+  //     if(cheatingModal.current.open) cheatingModal.current.close()
+  //     if(inspectModal.current.open) inspectModal.current.close()
+  //   }
+  // },[areDevToolsOpen])
 
 
   // code handles and generated here
@@ -93,7 +94,14 @@ export default function CodeEditor() {
       js:jsRef.current.getValue()
     }
     const generatedcode = generateCode(addimages(data.html),data.css,data.js)
-    setCode({prevcode:generatedcode,data:data})
+    const prevcodelen = code.data.html.length+code.data.css.length+code.data.js.length
+    const newcodelen = data.html.length+data.css.length+data.js.length
+    if(newcodelen-prevcodelen>60){
+      preventpaste.current.showModal()
+    }
+    else{
+      setCode({prevcode:generatedcode,data:data})
+    }
   }
 
   useEffect(() => {
@@ -114,20 +122,20 @@ export default function CodeEditor() {
   // Keys banned here
   useEffect(() => {
     const handler=(event)=>{
-      if ((event.ctrlKey||event.metaKey) &&
-       (event.key.toLowerCase() === 'c' ||
-        event.key.toLowerCase() === 'v' ||
-        event.key.toLowerCase() === 'x')) {
-        event.preventDefault();
-        cheatingModal.current.showModal()
-        if(inspectModal.current.open) inspectModal.current.close()
-      }
-      else if((event.key === 'F12') || ((event.ctrlKey || event.metaKey) && (event.shiftKey) || event.altKey)) {
-        event.preventDefault();
-        inspectModal.current.showModal()
-        if(cheatingModal.current.open) cheatingModal.current.close()
-      }
-      else if ((event.ctrlKey || event.metaKey) &&
+      // if ((event.ctrlKey||event.metaKey) &&
+      //  (event.key.toLowerCase() === 'c' ||
+      //   event.key.toLowerCase() === 'v' ||
+      //   event.key.toLowerCase() === 'x')) {
+      //   event.preventDefault();
+      //   cheatingModal.current.showModal()
+      //   if(inspectModal.current.open) inspectModal.current.close()
+      // }
+      // else if((event.key === 'F12') || ((event.ctrlKey || event.metaKey) && (event.shiftKey) || event.altKey)) {
+      //   event.preventDefault();
+      //   inspectModal.current.showModal()
+      //   if(cheatingModal.current.open) cheatingModal.current.close()
+      // }
+      if ((event.ctrlKey || event.metaKey) &&
        (event.key.toLowerCase() === 'i' ||
         event.key.toLowerCase() === 'j' ||
         event.key.toLowerCase() === 'c'
@@ -164,6 +172,7 @@ export default function CodeEditor() {
       <Modal heading={'Permission'} description={'You tried using devtools therefore you have to reload'} btntext={'Reload'} ref={reloadModal} func={()=>{location.reload()}} />
       <Modal heading={'Warning'} description={"You can't copy, paste, or use context menu"} btntext={'Confirm'} ref={cheatingModal}/>
       <Modal heading={'Warning'} description={"You can't use developer Tools or inspect elements"} btntext={'Confirm'} ref={inspectModal}/>
+      <Modal heading={'Warning'} description={"It seems like you tried pasting large chunk of code. Remove the pasted part or you can't code here"} btntext={'Confirm'} ref={preventpaste}/>
       <div className='flex w-screen h-11/12 gap-20' >
         <div className="py-5 w-5/12 h-full px-10 relative">
           <EditorsGroup handleCodeChange={handleCodeChange} htmlRef={htmlRef} cssRef={cssRef} jsRef={jsRef} currentdata={initialCode.data} modal={cheatingModal}/>

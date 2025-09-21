@@ -12,7 +12,7 @@ export default function Header(){
             <div className="flex gap-10">
                 <button className="text-xl cursor-pointer hover:-translate-y-0.5 hover:scale-105 transition-all duration-300"
                     onClick={()=>modal.current.showModal()}>
-                    <i class="fa-solid fa-images mr-2"></i>
+                    <i className="fa-solid fa-images mr-2"></i>
                     Uploaded Pictures</button>
                 <a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener noreferrer"
                 className="text-xl cursor-pointer hover:-translate-y-0.5 hover:scale-105 transition-all duration-300">
