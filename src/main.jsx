@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import App from './App.jsx'
 import Homepage from './components/Homepage.jsx'
 import CodeEditor from './components/CodeEditor.jsx'
+import { ImageProvider } from './store/ImageContext.jsx'
 import "./index.css"
 
 const router = createBrowserRouter([
@@ -23,5 +24,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
+  <ImageProvider>
+    <RouterProvider router={router} />
+  </ImageProvider>
 )

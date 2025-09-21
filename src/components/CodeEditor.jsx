@@ -5,8 +5,10 @@ import Preview from './Preview';
 import Header from './Header';
 import Modal from './Modal';
 import { useDevToolsDetection } from '../hooks/useDevToolsDetection';
+import { useImages } from '../store/ImageContext';
 
 export default function CodeEditor() {
+  const {images} = useImages()
   const htmlRef = useRef();
   const cssRef = useRef();
   const jsRef = useRef();
@@ -14,11 +16,11 @@ export default function CodeEditor() {
   const cheatingModal = useRef();
   const inspectModal = useRef();
   const reloadModal = useRef();
-  
+
   const initialCode = useMemo(()=>{
     const stored = JSON.parse(sessionStorage.getItem('code'));
     const initialCode = stored
-    ? { prevcode: generateCode(stored.html, stored.css, stored.js), data: stored }
+    ? { prevcode: generateCode(addimages(stored.html), stored.css, stored.js), data: stored }
     : { prevcode: defaultcode, data: defaultdata };
     return initialCode
   },[])
@@ -27,6 +29,8 @@ export default function CodeEditor() {
   const [ isFull, setisFull ] = useState(false)
   const areDevToolsOpen = useDevToolsDetection()
 
+
+  // fullscreen checker
   const enterFullscreen = useCallback(function enterFullscreen(){
     const element=document.documentElement;
     if (element.requestFullscreen){
@@ -80,14 +84,15 @@ export default function CodeEditor() {
     }
   },[areDevToolsOpen])
 
+
+  // code handles and generated here
   function handleCodeChange(){
     const data={
       html:htmlRef.current.getValue(),
       css:cssRef.current.getValue(),
       js:jsRef.current.getValue()
     }
-
-    const generatedcode = generateCode(data.html,data.css,data.js)
+    const generatedcode = generateCode(addimages(data.html),data.css,data.js)
     setCode({prevcode:generatedcode,data:data})
   }
 
@@ -95,6 +100,18 @@ export default function CodeEditor() {
     sessionStorage.setItem('code', JSON.stringify(code.data));
   }, [code.data]);
 
+  function addimages(html){
+    let output=html;
+    for (const [name, url] of Object.entries(images)) {
+      const regex = new RegExp(`src\s*=\s*["']${name}["']`, "g");
+      output = output.replace(regex, `src="${url}"`);
+    }
+    return output;
+};
+
+
+
+  // Keys banned here
   useEffect(() => {
     const handler=(event)=>{
       if ((event.ctrlKey||event.metaKey) &&
@@ -131,8 +148,8 @@ export default function CodeEditor() {
     const handler=(e)=>{
       e.preventDefault();
       cheatingModal.current.showModal()
-      if(inspectModal.current.open()) cheatingModal.current.close()
-      if(modal.current.open()) modal.current.close()
+      if(inspectModal.current.open) cheatingModal.current.close()
+      if(modal.current.open) modal.current.close()
     }
     window.addEventListener('contextmenu', handler);
     return () => {

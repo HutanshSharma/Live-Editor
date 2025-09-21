@@ -2,10 +2,12 @@ import { FileText, ExternalLink, Info, AlertCircle, Monitor } from 'lucide-react
 import Modal from "./Modal"
 import { Link } from 'react-router-dom';
 import { useRef,useEffect } from 'react';
+import UploadModal from "./UploadModal"
 
 export default function Homepage() {
   const inspectModal = useRef();
   const cheatingModal = useRef();
+  const modal = useRef()
 
   useEffect(() => {
     const handler=(event)=>{
@@ -43,6 +45,7 @@ export default function Homepage() {
     <>
     <Modal heading={'Warning'} description={"You can't copy, paste, or use context menu"} btntext={'Confirm'} ref={cheatingModal}/>
     <Modal heading={'Warning'} description={"You can't use Developer Tools or inspect elements"} btntext={'Confirm'} ref={inspectModal}/>
+    <UploadModal modalref={modal} />
     <div className="min-h-screen text-white" style={{background: 'linear-gradient(180deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%)'}}>
       <header className="container mx-auto px-6 py-8">
         <div className="flex items-center justify-between">
@@ -71,6 +74,9 @@ export default function Homepage() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button 
+            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 py-4 rounded-full text-lg font-semibold transition-all transform hover:scale-105 shadow-lg inline-block text-center"
+            onClick={()=>modal.current.showModal()}>Add Images</button>
             <Link 
               to='/codeeditor'
               className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 py-4 rounded-full text-lg font-semibold transition-all transform hover:scale-105 shadow-lg inline-block text-center"
