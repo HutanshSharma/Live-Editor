@@ -2,7 +2,7 @@ import { useEffect,useRef, useState } from "react";
 import { createPortal } from "react-dom"
 import { useImages } from "../store/ImageContext";
 
-export default function({modalref, successref, setisopen, failureref}){
+export default function({modalref, successref, setisopen, failureref, maximageref}){
     const { images, setImages } = useImages()
     const name = useRef(null)
     const image = useRef(null)
@@ -17,11 +17,18 @@ export default function({modalref, successref, setisopen, failureref}){
             failureref.current.showModal()
             modalref.current.showModal()
         }
+        else if(Object.keys(images).length>=12){
+            setisopen(true)
+            maximageref.current.showModal()
+            name.current.value=null
+            image.current.value=null
+            setSelectedFileName('')
+            modalref.current.close()
+        }
         else if(file) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImages((prev) => ({ ...prev, [imagename]: reader.result }));
-                modalref.current.close()
                 name.current.value=null
                 image.current.value=null
                 setSelectedFileName('')
@@ -65,7 +72,8 @@ export default function({modalref, successref, setisopen, failureref}){
 
     return createPortal(
         <dialog ref={modalref} className="backdrop:bg-stone-900/90 bg-[rgba(11,11,11,0.8)] px-12 py-4 m-auto rounded-md shadow-md border-0 text-gray-300">
-            <h2 className="text-2xl text-[#E0E0E0] border-b-1 border-slate-600 mb-10">Add images here</h2>
+            <h2 className="text-2xl text-[#E0E0E0] border-b-1 border-slate-600 mb-5">Add images here</h2>
+            <h4 className="text-sm text-[rgba(253,0,0,0.5)] mb-5">You can only upload maximum 12 images at a time</h4>
             <form className="flex flex-col gap-4" onSubmit={handleUpload}>
                 <input type="text" placeholder="Enter the name of the image..." 
                 className="bg-[#2C2C2C] rounded-sm min-w-md px-4 py-2 border-b-3 border-transparent focus:outline-none focus:ring-0 focus:border-b-gray-500" ref={name} required></input>

@@ -12,6 +12,7 @@ export default function Homepage() {
   const modal = useRef()
   const successmodal = useRef()
   const failuremodal = useRef()
+  const maximageref = useRef()
 
   useEffect(() => {
     const handler=(event)=>{
@@ -49,9 +50,10 @@ export default function Homepage() {
     <>
     <Modal heading={'Warning'} description={"You can't copy, paste, or use context menu"} btntext={'Confirm'} ref={cheatingModal}/>
     <Modal heading={'Warning'} description={"You can't use Developer Tools or inspect elements"} btntext={'Confirm'} ref={inspectModal}/>
-    <UploadModal modalref={modal} successref={successmodal} failureref={failuremodal} setisopen={setisopen} />
+    <UploadModal modalref={modal} successref={successmodal} failureref={failuremodal} maximageref={maximageref} setisopen={setisopen} />
     <SuccessModal ref={successmodal} heading={'Image uploaded'} description={'Image has been uploaded successfully'} isopen={isopen} setisopen={setisopen} bgcolor={'success'}/>
     <SuccessModal ref={failuremodal} heading={'Failed'} description={'Image name already taken'} isopen={isopen} setisopen={setisopen} bgcolor={'failure'}/>
+    <SuccessModal ref={maximageref} heading={'Error'} description={'You can\'t upload more than 12 pictures at a time'} isopen={isopen} setisopen={setisopen} bgcolor={'failure'}/>
 
 
     <div className="min-h-screen text-white" style={{background: 'linear-gradient(180deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%)'}}>
