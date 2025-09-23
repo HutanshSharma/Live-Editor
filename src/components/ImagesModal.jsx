@@ -29,7 +29,7 @@ export default function({ref}){
     return createPortal(
         <dialog ref={ref} className="backdrop:bg-stone-900/90 bg-[rgba(11,11,11,0.8)] py-4 px-12 m-auto rounded-md min-w-xl shadow-md border-0 text-gray-300">
             <h2 className="text-2xl border-b-1 border-slate-600">Images</h2>
-            <div className="flex gap-16 mt-10">
+            <div className="flex flex-wrap gap-16 mt-10">
                 {Object.entries(images).map(([key,val])=>{
                     return (
                         <div className="flex flex-col justify-center items-center" key={key}>
@@ -40,11 +40,8 @@ export default function({ref}){
                 })}
             </div>
             <div className="mt-4 text-right border-0">
-                <button onClick={()=>{ref.current.close()
-                    if(func){
-                        func()
-                    }
-                }} className="text-white bg-red-400 px-4 hover:bg-red-600 py-2 rounded-md focus:border-0">Close</button>
+                <button onClick={()=>{ref.current.close()}} 
+                className="text-white bg-red-400 px-4 hover:bg-red-600 py-2 rounded-md focus:border-0">Close</button>
             </div>
         </dialog>
         ,document.getElementById("modal")

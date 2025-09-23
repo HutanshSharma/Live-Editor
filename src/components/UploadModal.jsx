@@ -2,7 +2,7 @@ import { useEffect,useRef, useState } from "react";
 import { createPortal } from "react-dom"
 import { useImages } from "../store/ImageContext";
 
-export default function({modalref}){
+export default function({modalref, successref, setisopen, failureref}){
     const { images, setImages } = useImages()
     const name = useRef(null)
     const image = useRef(null)
@@ -13,7 +13,8 @@ export default function({modalref}){
         const file = image.current.files[0]
         const imagename = name.current.value
         if(imagename in images){
-            alert('Image name already used')
+            setisopen(true)
+            failureref.current.showModal()
             modalref.current.showModal()
         }
         else if(file) {
@@ -26,6 +27,8 @@ export default function({modalref}){
                 setSelectedFileName('')
             };
             reader.readAsDataURL(file);
+            setisopen(true)
+            successref.current.showModal()
             }
     };
 
@@ -65,13 +68,13 @@ export default function({modalref}){
             <h2 className="text-2xl text-[#E0E0E0] border-b-1 border-slate-600 mb-10">Add images here</h2>
             <form className="flex flex-col gap-4" onSubmit={handleUpload}>
                 <input type="text" placeholder="Enter the name of the image..." 
-                className="bg-[#2C2C2C] rounded-sm min-w-md px-4 py-2 border-b-3 border-transparent focus:outline-none focus:ring-0 focus:border-b-gray-500" ref={name}></input>
+                className="bg-[#2C2C2C] rounded-sm min-w-md px-4 py-2 border-b-3 border-transparent focus:outline-none focus:ring-0 focus:border-b-gray-500" ref={name} required></input>
                 <input type="file"
                     id="file-upload"
                     accept="image/*"
                     className='sr-only' 
                     ref={image}
-                    onChange={handleFileChange}/>
+                    onChange={handleFileChange} required/>
                 <label htmlFor="file-upload" className="custom-file-upload">
                     <div className="custom-text">
                     {selectedFileName||'Choose the image file'}
@@ -81,7 +84,7 @@ export default function({modalref}){
                     <button className="text-white bg-[#2196F3] px-4 hover:bg-[#1976D2] py-2 rounded-md focus:border-0"
                     type="submit">Upload</button>
                     <button className="text-white bg-red-400 px-4 hover:bg-red-600 py-2 rounded-md focus:border-0"
-                    onClick={()=>modalref.current.close()}>Cancel</button>
+                    onClick={()=>modalref.current.close()} type="button">Cancel</button>
                 </div>
             </form>
         </dialog>

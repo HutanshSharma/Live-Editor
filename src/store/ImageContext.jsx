@@ -1,4 +1,3 @@
-// store/ImageContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
 
 const ImageContext = createContext();
