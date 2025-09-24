@@ -77,13 +77,13 @@ export default function CodeEditor() {
     }
   },[isFull])
 
-  // useEffect(()=>{
-  //   if(areDevToolsOpen===true){
-  //     reloadModal.current.showModal()
-  //     if(cheatingModal.current.open) cheatingModal.current.close()
-  //     if(inspectModal.current.open) inspectModal.current.close()
-  //   }
-  // },[areDevToolsOpen])
+  useEffect(()=>{
+    if(areDevToolsOpen===true){
+      reloadModal.current.showModal()
+      if(cheatingModal.current.open) cheatingModal.current.close()
+      if(inspectModal.current.open) inspectModal.current.close()
+    }
+  },[areDevToolsOpen])
 
 
   // code handles and generated here
@@ -130,11 +130,11 @@ export default function CodeEditor() {
         cheatingModal.current.showModal()
         if(inspectModal.current.open) inspectModal.current.close()
       }
-      // else if((event.key === 'F12') || ((event.ctrlKey || event.metaKey) && (event.shiftKey) || event.altKey)) {
-      //   event.preventDefault();
-      //   inspectModal.current.showModal()
-      //   if(cheatingModal.current.open) cheatingModal.current.close()
-      // }
+      else if((event.key === 'F12') || ((event.ctrlKey || event.metaKey) && (event.shiftKey) || event.altKey)) {
+        event.preventDefault();
+        inspectModal.current.showModal()
+        if(cheatingModal.current.open) cheatingModal.current.close()
+      }
       if ((event.ctrlKey || event.metaKey) &&
        (event.key.toLowerCase() === 'i' ||
         event.key.toLowerCase() === 'j'

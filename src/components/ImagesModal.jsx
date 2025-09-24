@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom"
 import { useImages } from "../store/ImageContext";
+import IndividualImage from "./IndividualImage";
 
 export default function({ref}){
     const { images } = useImages()
@@ -31,12 +32,7 @@ export default function({ref}){
             <h2 className="text-2xl border-b-1 border-slate-600">Images</h2>
             <div className="flex flex-wrap gap-16 mt-10">
                 {Object.entries(images).map(([key,val])=>{
-                    return (
-                        <div className="flex flex-col justify-center items-center" key={key}>
-                            <img className="h-36 w-40 rounded-md" src={val}/>
-                            <p className="text-xl">{key}</p>
-                        </div>
-                    )
+                    return (<IndividualImage key={key} img={val} name={key}/>)
                 })}
             </div>
             <div className="mt-4 text-right border-0">

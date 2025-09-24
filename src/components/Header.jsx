@@ -23,7 +23,7 @@ export default function Header({code}){
                 <button className={btn_class}
                     onClick={()=>modal.current.showModal()}>
                     <i className="fa-solid fa-images mr-2"></i>
-                    Uploaded Pictures</button>
+                    Uploaded Images</button>
                 <button className={btn_class} onClick={()=>submitmodal.current.showModal()}>
                     <i className="fa-solid fa-file-export mr-2"></i>Submit</button>
                 <a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener noreferrer"

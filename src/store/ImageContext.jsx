@@ -8,10 +8,6 @@ export function ImageProvider({ children }) {
       return storedImages ? JSON.parse(storedImages) : {};
   });
 
-  useEffect(() => {
-    sessionStorage.setItem('images', JSON.stringify(images));
-  }, [images]);
-
   return (
     <ImageContext.Provider value={{ images, setImages }}>
       {children}
