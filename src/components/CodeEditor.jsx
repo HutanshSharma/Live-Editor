@@ -27,7 +27,10 @@ export default function CodeEditor() {
   },[])
   
   const [code, setCode] = useState(initialCode);
-  const [ isFull, setisFull ] = useState(false)
+  const [ isFull, setisFull ] = useState(!!(document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement))
   const areDevToolsOpen = useDevToolsDetection()
 
 
