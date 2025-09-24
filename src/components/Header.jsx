@@ -3,11 +3,8 @@ import { useRef, useState } from "react";
 import SubmitModal from "./SubmitModal";
 import SuccessModal from "./SuccessModal";
 
-export default function Header({code}){
+export default function Header({code,submitmodal,modal,successmodal}){
     const [isopen, setisopen] = useState(false)
-    const modal = useRef()
-    const submitmodal = useRef()
-    const successmodal = useRef()
 
     const btn_class = "text-xl cursor-pointer hover:-translate-y-0.5 hover:scale-105 transition-all duration-300"
 

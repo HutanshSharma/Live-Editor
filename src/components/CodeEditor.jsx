@@ -17,6 +17,9 @@ export default function CodeEditor() {
   const inspectModal = useRef();
   const reloadModal = useRef();
   const preventpaste = useRef()
+  const imagesmodal = useRef()
+  const submitmodal = useRef()
+  const successmodal = useRef()
 
   const initialCode = useMemo(()=>{
     const stored = JSON.parse(sessionStorage.getItem('code'));
@@ -76,6 +79,8 @@ export default function CodeEditor() {
       modal.current.showModal()
       if(cheatingModal.current.open) cheatingModal.current.close()
       if(inspectModal.current.open) inspectModal.current.close()
+      if(submitmodal.current.open) submitmodal.current.close()
+      if(imagesmodal.current.open) imagesmodal.current.close()
       setisFull(true)
     }
   },[isFull])
@@ -85,6 +90,8 @@ export default function CodeEditor() {
       reloadModal.current.showModal()
       if(cheatingModal.current.open) cheatingModal.current.close()
       if(inspectModal.current.open) inspectModal.current.close()
+      if(submitmodal.current.open) submitmodal.current.close()
+      if(imagesmodal.current.open) imagesmodal.current.close()
     }
   },[areDevToolsOpen])
 
@@ -132,11 +139,15 @@ export default function CodeEditor() {
         event.preventDefault();
         cheatingModal.current.showModal()
         if(inspectModal.current.open) inspectModal.current.close()
+        if(submitmodal.current.open) submitmodal.current.close()
+        if(imagesmodal.current.open) imagesmodal.current.close()
       }
       else if((event.key === 'F12') || ((event.ctrlKey || event.metaKey) && (event.shiftKey) || event.altKey)) {
         event.preventDefault();
         inspectModal.current.showModal()
         if(cheatingModal.current.open) cheatingModal.current.close()
+        if(submitmodal.current.open) submitmodal.current.close()
+        if(imagesmodal.current.open) imagesmodal.current.close()
       }
       if ((event.ctrlKey || event.metaKey) &&
        (event.key.toLowerCase() === 'i' ||
@@ -145,6 +156,8 @@ export default function CodeEditor() {
         event.preventDefault();
         inspectModal.current.showModal()
         if(cheatingModal.current.open) cheatingModal.current.close()
+        if(submitmodal.current.open) submitmodal.current.close()
+        if(imagesmodal.current.open) imagesmodal.current.close()
       }
       };
 
@@ -159,7 +172,8 @@ export default function CodeEditor() {
       e.preventDefault();
       cheatingModal.current.showModal()
       if(inspectModal.current.open) cheatingModal.current.close()
-      if(modal.current.open) modal.current.close()
+      if(submitmodal.current.open) submitmodal.current.close()
+      if(imagesmodal.current.open) imagesmodal.current.close()
     }
     window.addEventListener('contextmenu', handler);
     return () => {
@@ -169,7 +183,7 @@ export default function CodeEditor() {
 
   return (
     <Fragment>
-      <Header code={code.prevcode} />
+      <Header code={code.prevcode} modal={imagesmodal} submitmodal={submitmodal} successmodal={successmodal}/>
       <Modal heading={'Permission'} description={'You have to enter fullscreen to continue'} btntext={'Allow'} ref={modal} func={enterFullscreen} />
       <Modal heading={'Permission'} description={'Close the Developer Tools and Reload'} btntext={'Reload'} ref={reloadModal} func={()=>{location.reload()}} />
       <Modal heading={'Warning'} description={"You can't copy, paste, or use context menu"} btntext={'Confirm'} ref={cheatingModal}/>
