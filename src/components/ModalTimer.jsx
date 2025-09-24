@@ -10,7 +10,7 @@ export default function ModalTimer({ timeout, onTimeout, type }){
     
     useEffect(()=>{
         const id = setInterval(()=>{
-        setRemainingTime(prev=>prev-15)
+        setRemainingTime(prev=>prev-10)
         },10)
 
         return ()=>{clearInterval(id)}
