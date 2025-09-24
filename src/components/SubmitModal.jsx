@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { createPortal } from "react-dom";
 import LoaderComp from "./LoaderComp";
+import { generateCode } from "../generateCode";
 
 export default function({ref,code, successref, setisopen}){
     const form = useRef()
@@ -58,7 +59,7 @@ export default function({ref,code, successref, setisopen}){
                 <label htmlFor="student-id">Enter your Student'id here</label>
                 <input type="text" name="student_id"
                 className="bg-[#2C2C2C] rounded-sm min-w-md px-4 py-2 border-b-3 border-transparent focus:outline-none focus:ring-0 focus:border-b-gray-500" required/>
-                <input type="hidden" name="code" value={code} />
+                <input type="hidden" name="code" value={generateCode(code.html,code.css,code.js)} />
                 <div className="flex gap-2 mb-3">
                     <button className="text-white bg-[#2196F3] px-4 hover:bg-[#1976D2] py-2 rounded-md focus:border-0 min-w-22"
                     type="submit">{loading ? <LoaderComp size={20} strokeWidth={3}/>:'Submit' }</button>

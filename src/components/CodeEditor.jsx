@@ -127,8 +127,6 @@ export default function CodeEditor() {
     return output;
 };
 
-
-
   // Keys banned here
   useEffect(() => {
     const handler=(event)=>{
@@ -142,7 +140,7 @@ export default function CodeEditor() {
         if(submitmodal.current.open) submitmodal.current.close()
         if(imagesmodal.current.open) imagesmodal.current.close()
       }
-      else if((event.key === 'F12') || ((event.ctrlKey || event.metaKey) && (event.shiftKey) || event.altKey)) {
+      if((event.key === 'F12') || ((event.ctrlKey || event.metaKey) && (event.shiftKey) || event.altKey)) {
         event.preventDefault();
         inspectModal.current.showModal()
         if(cheatingModal.current.open) cheatingModal.current.close()
@@ -183,7 +181,7 @@ export default function CodeEditor() {
 
   return (
     <Fragment>
-      <Header code={code.prevcode} modal={imagesmodal} submitmodal={submitmodal} successmodal={successmodal}/>
+      <Header code={code.data} modal={imagesmodal} submitmodal={submitmodal} successmodal={successmodal}/>
       <Modal heading={'Permission'} description={'You have to enter fullscreen to continue'} btntext={'Allow'} ref={modal} func={enterFullscreen} />
       <Modal heading={'Permission'} description={'Close the Developer Tools and Reload'} btntext={'Reload'} ref={reloadModal} func={()=>{location.reload()}} />
       <Modal heading={'Warning'} description={"You can't copy, paste, or use context menu"} btntext={'Confirm'} ref={cheatingModal}/>
