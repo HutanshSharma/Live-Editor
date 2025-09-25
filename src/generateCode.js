@@ -10,6 +10,21 @@ export function generateCode(html,css,js){
 <style>${css}</style>
 <script defer>
   document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href && href.trim().startsWith('#')) { 
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
     try {
       ${js}
     } catch (err) {
@@ -41,7 +56,6 @@ text = document.querySelector('.text')
 text.style.color = 'red'
 `
 
-
 export const defaultcode =`
 <!DOCTYPE html>
 <html lang="en">
@@ -53,6 +67,21 @@ export const defaultcode =`
 <style>${dcss}</style>
 <script defer>
   document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href && href.trim().startsWith('#')) { 
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
     try {
       ${djs}
     } catch (err) {
