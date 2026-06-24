@@ -71,7 +71,7 @@ flowchart TD
 ### From keystroke to live preview
 
 ```mermaid
-flowchart LR
+flowchart TD
     K["User types in a<br/>Monaco editor"] --> L["handleCodeChange()"]
     L --> M{"Big paste?<br/>(+60 chars at once)"}
     M -- yes --> N["Show 'no paste' modal<br/>(change rejected)"]
@@ -86,6 +86,7 @@ flowchart LR
 
 ### Submission flow
 
+<div style="padding: 0 40px;">
 ```mermaid
 sequenceDiagram
     participant U as User
@@ -99,29 +100,35 @@ sequenceDiagram
     EJ-->>SM: Success / failure
     SM->>U: Show success toast (auto-dismiss)
 ```
+</div>
 
 ### Anti-cheat & tamper guard
 
 ```mermaid
 flowchart TD
     subgraph Live monitors
+      direction TB  
       T1["Keydown / contextmenu listeners"] --> M1["Blocking modal"]
       T2["DevTools size heuristic"] --> M2["Reload modal"]
       T3["Exited fullscreen"] --> M3["Re-enter fullscreen modal"]
     end
 
     subgraph useTamperGuard - MutationObserver
+      direction TB  
       G1["A dialog removed from #modal"] --> R["location.reload()"]
       G2["#modal host removed"] --> R
       G3["open attribute stripped<br/>(not via real .close())"] --> R
     end
 
     subgraph Storage integrity
+      direction TB  
       S1["Load code from sessionStorage"] --> S2["secureDecode()"]
       S2 --> S3{"Checksum valid?"}
       S3 -- no --> S4["Discard → use defaults"]
       S3 -- yes --> S5["Restore code"]
     end
+    M3 ~~~ G1
+    R ~~~ S1
 ```
 
 ---
