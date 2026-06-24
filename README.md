@@ -86,21 +86,27 @@ flowchart TD
 
 ### Submission flow
 
-<div style="padding: 0 40px;">
 ```mermaid
+%%{init: {
+  "themeVariables": {
+    "diagramMarginX": 100,
+    "diagramMarginY": 20
+  }
+}}%%
+
 sequenceDiagram
     participant U as User
     participant SM as SubmitModal
     participant GC as generateCode
     participant EJ as EmailJS
+
     U->>SM: Fill name + student ID, click Submit
     SM->>GC: Build HTML doc (code only, no image data)
     GC-->>SM: HTML string
     SM->>EJ: send(name, student_id, code)
-    EJ-->>SM: Success / failure
+    EJ-->>SM: Success /failure
     SM->>U: Show success toast (auto-dismiss)
 ```
-</div>
 
 ### Anti-cheat & tamper guard
 
