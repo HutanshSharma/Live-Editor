@@ -3,7 +3,7 @@ import { createPortal } from "react-dom"
 import { useImages } from "../store/ImageContext";
 import IndividualImage from "./IndividualImage";
 
-export default function({ref}){
+export default function ImagesModal({ref}){
     const { images } = useImages()
     useEffect(() => {
         const dialog = ref.current;

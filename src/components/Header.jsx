@@ -1,5 +1,5 @@
 import ImagesModal from "./ImagesModal";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import SubmitModal from "./SubmitModal";
 import SuccessModal from "./SuccessModal";

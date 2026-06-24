@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 
 const ImageContext = createContext();
 
@@ -15,6 +15,7 @@ export function ImageProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useImages() {
   return useContext(ImageContext);
 }

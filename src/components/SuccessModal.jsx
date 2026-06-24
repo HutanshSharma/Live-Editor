@@ -3,7 +3,7 @@ import { createPortal } from "react-dom"
 import ModalTimer from "./ModalTimer";
 import { CheckCircle2, XCircle, X } from "lucide-react";
 
-export default function({heading,description,ref, isopen, setisopen, bgcolor}){
+export default function SuccessModal({heading,description,ref, isopen, setisopen, bgcolor}){
 
     useEffect(() => {
         const dialog = ref.current;

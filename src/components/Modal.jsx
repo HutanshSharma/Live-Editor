@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom"
 
-export default function({heading,description,ref,btntext,func}){
+export default function Modal({heading,description,ref,btntext,func}){
     useEffect(() => {
         const dialog = ref.current;
         const handler = (e)=>{

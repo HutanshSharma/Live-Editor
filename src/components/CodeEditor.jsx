@@ -1,10 +1,12 @@
 import { Fragment, useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import EditorsGroup from './EditorsGroup';
-import { generateCode, defaultcode, defaultdata} from '../generateCode';
+import { generateCode, addImages, defaultcode, defaultdata} from '../utils/generateCode';
 import Preview from './Preview';
 import Header from './Header';
 import Modal from './Modal';
 import { useDevToolsDetection } from '../hooks/useDevToolsDetection';
+import { useTamperGuard } from '../hooks/useTamperGuard';
+import { secureEncode, secureDecode } from '../utils/secureStore';
 import { useImages } from '../store/ImageContext';
 
 export default function CodeEditor() {
@@ -22,7 +24,7 @@ export default function CodeEditor() {
   const successmodal = useRef()
 
   const initialCode = useMemo(()=>{
-    const stored = JSON.parse(sessionStorage.getItem('code'));
+    const stored = secureDecode(sessionStorage.getItem('code'));
     const initialCode = stored
     ? { prevcode: generateCode(addimages(stored.html), stored.css, stored.js), data: stored }
     : { prevcode: defaultcode, data: defaultdata };
@@ -36,6 +38,7 @@ export default function CodeEditor() {
       document.mozFullScreenElement ||
       document.msFullscreenElement))
   const areDevToolsOpen = useDevToolsDetection()
+  useTamperGuard()
 
 
   // fullscreen checker
@@ -116,17 +119,12 @@ export default function CodeEditor() {
   }
 
   useEffect(() => {
-    sessionStorage.setItem('code', JSON.stringify(code.data));
+    sessionStorage.setItem('code', secureEncode(code.data));
   }, [code.data]);
 
   function addimages(html){
-    let output=html;
-    for (const [name, url] of Object.entries(images)) {
-      const regex = new RegExp(`src\s*=\s*["']${name}["']`, "g");
-      output = output.replace(regex, `src="${url}"`);
-    }
-    return output;
-};
+    return addImages(html, images)
+  }
 
   // Keys banned here
   useEffect(() => {

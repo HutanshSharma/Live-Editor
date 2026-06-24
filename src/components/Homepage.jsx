@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useRef,useEffect,useState } from 'react';
 import UploadModal from "./UploadModal"
 import SuccessModal from './SuccessModal';
+import { useTamperGuard } from '../hooks/useTamperGuard';
 
 export default function Homepage() {
   const [isopen, setisopen] = useState(false)
@@ -14,6 +15,8 @@ export default function Homepage() {
   const failuremodal = useRef()
   const maximageref = useRef()
   const revealRef = useRef(null)
+
+  useTamperGuard()
 
   useEffect(() => {
     const root = revealRef.current

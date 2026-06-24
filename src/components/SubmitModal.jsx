@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { createPortal } from "react-dom";
 import LoaderComp from "./LoaderComp";
-import { generateCode } from "../generateCode";
+import { generateCode } from "../utils/generateCode";
 
-export default function({ref,code, successref, setisopen}){
+export default function SubmitModal({ref,code, successref, setisopen}){
     const form = useRef()
     const [loading, setloading] = useState(false)
 
@@ -30,23 +30,33 @@ export default function({ref,code, successref, setisopen}){
         };
     }, [ref]);
 
-    function sendmail(e){
+    async function sendmail(e){
         e.preventDefault()
         setloading(true)
-        emailjs.sendForm(
+        try {
+            const fd = new FormData(form.current)
+
+            const fullCode = generateCode(code.html, code.css, code.js)
+
+            await emailjs.send(
                 import.meta.env.VITE_EMAILJS_SERVICE_ID,
                 import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-                form.current,                            
-                import.meta.env.VITE_EMAILJS_PUBLIC_KEY 
+                {
+                    name: fd.get('name'),
+                    student_id: fd.get('student_id'),
+                    code: fullCode,
+                },
+                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
             )
-        .then(
-            ()=>{
-                setisopen(true)
-                successref.current.showModal()
-                ref.current.close()
-                setloading(false)
-            }
-        )
+
+            setisopen(true)
+            successref.current.showModal()
+            ref.current.close()
+        } catch (err) {
+            console.error('Submission failed:', err)
+        } finally {
+            setloading(false)
+        }
     }
 
     return createPortal(
@@ -71,7 +81,6 @@ export default function({ref,code, successref, setisopen}){
                     <input id="sub-id" type="text" name="student_id" placeholder="e.g. 2024XXXX"
                     className="bg-[#1b2336] rounded-lg w-full px-4 py-2.5 border border-white/10 placeholder:text-slate-500 focus:outline-none focus:ring-0 focus:border-indigo-400 transition-colors" required/>
                 </div>
-                <input type="hidden" name="code" value={generateCode(code.html,code.css,code.js)} />
                 <div className="flex gap-3 mt-2">
                     <button className="flex-1 inline-flex items-center justify-center gap-2 text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2.5 rounded-lg font-medium transition-colors focus:outline-none disabled:opacity-60"
                     disabled={loading}

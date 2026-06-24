@@ -2,7 +2,7 @@ import { useEffect,useRef, useState } from "react";
 import { createPortal } from "react-dom"
 import { useImages } from "../store/ImageContext";
 
-export default function({modalref, successref, setisopen, failureref, maximageref}){
+export default function UploadModal({modalref, successref, setisopen, failureref, maximageref}){
     const { images, setImages } = useImages()
     const name = useRef(null)
     const image = useRef(null)
@@ -29,7 +29,7 @@ export default function({modalref, successref, setisopen, failureref, maximagere
                     setisopen(true)
                     successref.current.showModal()
                 }
-                catch(error){
+                catch{
                     name.current.value=null
                     image.current.value=null
                     setSelectedFileName('')

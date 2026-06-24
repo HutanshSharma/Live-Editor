@@ -3,9 +3,9 @@ import { useImages } from "../store/ImageContext";
 export default function IndividualImage({img,name}){
     const { images ,setImages} = useImages()
 
-    const handleDelete = (e) => {
+    const handleDelete = () => {
         const newimages = Object.fromEntries(
-            Object.entries(images).filter(([key, value])=>key!=name));
+            Object.entries(images).filter(([key])=>key!=name));
         setImages(newimages)
         sessionStorage.setItem('images', JSON.stringify(newimages));
     };

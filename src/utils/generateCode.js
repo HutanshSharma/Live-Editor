@@ -1,3 +1,13 @@
+export function addImages(html, images){
+    let output = html;
+    for (const [name, url] of Object.entries(images || {})) {
+        const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`src\\s*=\\s*["']${escaped}["']`, "g");
+        output = output.replace(regex, `src="${url}"`);
+    }
+    return output;
+}
+
 export function generateCode(html,css,js){
     return  `
 <!DOCTYPE html>

@@ -230,7 +230,8 @@ body {
   opacity: 0;
   transform: translateY(26px);
   transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.32s ease, box-shadow 0.32s ease;
   will-change: opacity, transform;
 }
 
@@ -239,11 +240,9 @@ body {
   transform: none;
 }
 
-.feature-card {
-  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 0.32s ease, box-shadow 0.32s ease;
-}
-
+/* Hover lift for cards. The transition is inherited from .reveal above (every
+   feature card is also a .reveal element), so we only declare the hover end
+   state here — avoids a second `transition` shorthand clobbering the first. */
 .feature-card:hover {
   transform: translateY(-5px);
   background-color: rgba(255, 255, 255, 0.08);
