@@ -50,22 +50,35 @@ export default function({ref,code, successref, setisopen}){
     }
 
     return createPortal(
-        <dialog ref={ref} className="backdrop:bg-stone-900/80 backdrop:backdrop-blur-sm bg-[#0e1422]/95 p-5 m-auto rounded-xl shadow-2xl border-0 text-slate-200 relative w-[90vw] max-w-md">
-            <h2 className="text-2xl font-semibold border-b border-slate-600 pb-2">Submit the code</h2>
-            <form ref={form} onSubmit={sendmail} className="flex flex-col gap-3 mt-4">
-                <label htmlFor="name">Enter your name here</label>
-                <input name="name" type="text"
-                className="bg-[#1b2336] rounded-lg w-full px-4 py-2 border border-white/10 focus:outline-none focus:ring-0 focus:border-indigo-400 transition-colors" required/>
-                <label htmlFor="student-id">Enter your Student'id here</label>
-                <input type="text" name="student_id"
-                className="bg-[#1b2336] rounded-lg w-full px-4 py-2 border border-white/10 focus:outline-none focus:ring-0 focus:border-indigo-400 transition-colors" required/>
+        <dialog ref={ref} className="backdrop:bg-stone-900/80 backdrop:backdrop-blur-sm bg-[#0e1422]/95 p-6 m-auto rounded-xl shadow-2xl border-0 text-slate-200 relative w-[90vw] max-w-md">
+            <div className="flex items-center gap-3 border-b border-white/10 pb-3">
+                <span className="w-10 h-10 rounded-full bg-indigo-500/15 text-indigo-400 flex items-center justify-center shrink-0">
+                    <i className="fa-solid fa-paper-plane"></i>
+                </span>
+                <div>
+                    <h2 className="text-xl font-semibold leading-tight">Submit your code</h2>
+                    <p className="text-sm text-slate-400">We'll email your work to your instructor.</p>
+                </div>
+            </div>
+            <form ref={form} onSubmit={sendmail} className="flex flex-col gap-4 mt-5">
+                <div className="flex flex-col gap-1.5">
+                    <label htmlFor="sub-name" className="text-sm text-slate-400">Your name</label>
+                    <input id="sub-name" name="name" type="text" placeholder="e.g. Jane Doe"
+                    className="bg-[#1b2336] rounded-lg w-full px-4 py-2.5 border border-white/10 placeholder:text-slate-500 focus:outline-none focus:ring-0 focus:border-indigo-400 transition-colors" required/>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                    <label htmlFor="sub-id" className="text-sm text-slate-400">Student ID</label>
+                    <input id="sub-id" type="text" name="student_id" placeholder="e.g. 2024XXXX"
+                    className="bg-[#1b2336] rounded-lg w-full px-4 py-2.5 border border-white/10 placeholder:text-slate-500 focus:outline-none focus:ring-0 focus:border-indigo-400 transition-colors" required/>
+                </div>
                 <input type="hidden" name="code" value={generateCode(code.html,code.css,code.js)} />
-                <div className="flex gap-2 mb-3">
-                    <button className="text-white bg-[#2196F3] px-4 hover:bg-[#1976D2] py-2 rounded-md focus:border-0 min-w-22"
-                    type="submit">{loading ? <LoaderComp size={20} strokeWidth={3}/>:'Submit' }</button>
-                    <button type="button" 
+                <div className="flex gap-3 mt-2">
+                    <button className="flex-1 inline-flex items-center justify-center gap-2 text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2.5 rounded-lg font-medium transition-colors focus:outline-none disabled:opacity-60"
                     disabled={loading}
-                    className={!loading ? "text-white bg-red-400 px-4 hover:bg-red-600 py-2 rounded-md focus:border-0":'text-white bg-gray-600 hover:bg-gray-700 py-2 rounded-md px-4'}
+                    type="submit">{loading ? <LoaderComp size={20} strokeWidth={3}/> : <><i className="fa-solid fa-paper-plane"></i>Submit</> }</button>
+                    <button type="button"
+                    disabled={loading}
+                    className="px-5 py-2.5 rounded-lg font-medium bg-white/10 hover:bg-white/20 text-slate-200 transition-colors focus:outline-none disabled:opacity-60"
                     onClick={()=>ref.current.close()}>Cancel</button>
                 </div>
             </form>
