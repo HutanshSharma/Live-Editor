@@ -13,10 +13,10 @@ export default function IndividualImage({img,name}){
   return (
     <div className="flex flex-col justify-center items-center group">
       <div className="relative">
-        <img className="h-36 w-40 rounded-md" src={img} alt={name} />
+        <img className="h-28 w-full sm:h-36 sm:w-40 object-cover rounded-lg border border-white/10" src={img} alt={name} />
         <button
           onClick={handleDelete}
-          className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg cursor-pointer"
+          className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 shadow-lg cursor-pointer"
         >
           <svg
             className="w-5 h-5"
@@ -33,7 +33,7 @@ export default function IndividualImage({img,name}){
           </svg>
         </button>
       </div>
-      <p className="text-xl mt-2">{name}</p>
+      <p className="text-base sm:text-xl mt-2 break-all text-center">{name}</p>
     </div>
   );
 };

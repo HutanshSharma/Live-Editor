@@ -27,12 +27,12 @@ export default function({heading,description,ref, isopen, setisopen, bgcolor}){
         };
     }, [ref]);
 
-    let className = 'backdrop:bg-stone-900/90 p-4 m-auto rounded-md shadow-md border-0 relative min-w-lg'
+    let className = 'backdrop:bg-stone-900/80 backdrop:backdrop-blur-sm p-5 m-auto rounded-xl shadow-2xl border-0 relative w-[90vw] max-w-lg'
     if(bgcolor==='success'){
-        className+=' bg-[rgba(240,253,244,0.5)] text-[#0e3f21]'
+        className+=' bg-emerald-50 text-emerald-900'
     }
     else if(bgcolor==='failure'){
-        className+=' bg-[#FAFAFA80] text-[#374151]'
+        className+=' bg-rose-50 text-rose-900'
     }
 
     return createPortal(

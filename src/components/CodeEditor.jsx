@@ -30,6 +30,7 @@ export default function CodeEditor() {
   },[])
   
   const [code, setCode] = useState(initialCode);
+  const [ mobileView, setMobileView ] = useState('code');
   const [ isFull, setisFull ] = useState(!!(document.fullscreenElement ||
       document.webkitFullscreenElement ||
       document.mozFullScreenElement ||
@@ -181,18 +182,28 @@ export default function CodeEditor() {
 
   return (
     <Fragment>
-      <Header code={code.data} modal={imagesmodal} submitmodal={submitmodal} successmodal={successmodal}/>
       <Modal heading={'Permission'} description={'You have to enter fullscreen to continue'} btntext={'Allow'} ref={modal} func={enterFullscreen} />
       <Modal heading={'Permission'} description={'Close the Developer Tools and Reload'} btntext={'Reload'} ref={reloadModal} func={()=>{location.reload()}} />
       <Modal heading={'Warning'} description={"You can't copy, paste, or use context menu"} btntext={'Confirm'} ref={cheatingModal}/>
       <Modal heading={'Warning'} description={"You can't use developer Tools or inspect elements"} btntext={'Confirm'} ref={inspectModal}/>
       <Modal heading={'Warning'} description={"It seems like you tried pasting large chunk of code. Remove the pasted part or you can't code here"} btntext={'Confirm'} ref={preventpaste}/>
-      <div className='flex w-screen h-11/12 gap-20' >
-        <div className="py-5 w-5/12 h-full px-10 relative">
-          <EditorsGroup handleCodeChange={handleCodeChange} htmlRef={htmlRef} cssRef={cssRef} jsRef={jsRef} currentdata={initialCode.data} modal={cheatingModal}/>
-        </div>
-        <div className='w-1/2 py-5'>
-          <Preview modal={cheatingModal} code={code.prevcode} />
+      <div className="flex flex-col h-screen">
+        <Header code={code.data} modal={imagesmodal} submitmodal={submitmodal} successmodal={successmodal}/>
+        <div className='flex-1 min-h-0 relative overflow-hidden lg:overflow-visible lg:flex lg:flex-row lg:gap-8 lg:px-10 lg:py-4'>
+          <div className={`stack-card p-3 lg:p-0 lg:relative lg:w-1/2 lg:h-full ${mobileView === 'code' ? 'is-front' : 'is-back'}`}>
+            <EditorsGroup handleCodeChange={handleCodeChange} htmlRef={htmlRef} cssRef={cssRef} jsRef={jsRef} currentdata={initialCode.data} modal={cheatingModal}/>
+          </div>
+          <div className={`stack-card p-3 lg:p-0 lg:relative lg:w-1/2 lg:h-full ${mobileView === 'preview' ? 'is-front' : 'is-back'}`}>
+            <Preview modal={cheatingModal} code={code.prevcode} />
+          </div>
+          <button
+            aria-label={mobileView === 'code' ? 'Show preview' : 'Show code'}
+            onClick={() => setMobileView(v => (v === 'code' ? 'preview' : 'code'))}
+            className="fixed bottom-5 right-5 z-40 lg:hidden flex items-center justify-center w-12 h-12 rounded-full bg-indigo-500 hover:bg-indigo-600 active:scale-95 text-white shadow-lg shadow-black/40 transition-all duration-200">
+            {mobileView === 'code'
+              ? <i className="fa-solid fa-eye text-lg"></i>
+              : <i className="fa-solid fa-code text-lg"></i>}
+          </button>
         </div>
       </div>
     </Fragment>

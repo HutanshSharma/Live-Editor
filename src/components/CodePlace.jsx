@@ -1,16 +1,16 @@
 import Editor from '@monaco-editor/react';
 import { useRef } from 'react';
 
-export default function CodePlace({lang, defaultvalue, ref, onWrite, onExpand, active, modal}) {
+export default function CodePlace({ lang, defaultvalue, ref, onWrite, onExpand, active, modal }) {
     const editorRef = useRef()
-    
-    const name = lang.toLowerCase()
-    let classes = `w-full rounded-md overflow-hidden border-1 ${name} border-amber-50 expand-in`
 
-    if(active !== '' && active !== name)
-        classes += ' activefade'
-    if(active === name)
-        classes += ' active'
+    const name = lang.toLowerCase()
+    const isActive = active === name
+    const isCollapsed = active !== '' && active !== name
+
+    let classes = `editor-pane ${name}`
+    if (isActive) classes += ' is-active'
+    if (isCollapsed) classes += ' is-collapsed'
 
     let ele = ''
     name === 'html' ? ele = <i className="fa-brands fa-html5 mr-2"></i> :
@@ -26,21 +26,33 @@ export default function CodePlace({lang, defaultvalue, ref, onWrite, onExpand, a
         })
     }
 
-    return(
+    return (
         <div className={classes}>
-            <div className='flex justify-between px-10 py-1'>
-                <h3 className='font-bold'>{ele}{lang}</h3>
-                {!active && <button onClick={() => onExpand(name)} className="cursor-pointer hover:-translate-y-0.5 hover:scale-105 transition-all duration-300">Expand</button>}
-                {active && <button onClick={() => onExpand("")} className="cursor-pointer hover:-translate-y-0.5 hover:scale-105 transition-all duration-300">Minimize</button>}
+            <div className='editor-head'>
+                <h3 className='font-bold flex items-center'>{ele}{lang}</h3>
+                <button
+                    onClick={() => onExpand(isActive ? '' : name)}
+                    className="chrome-btn text-sm">
+                    {isActive ? 'Minimize' : 'Expand'}
+                </button>
             </div>
-            <Editor
-                height='100%'
-                defaultLanguage={name}
-                defaultValue={defaultvalue}
-                onMount={handleEditorMount}
-                theme="vs-dark"
-                onChange={onWrite}
-            />
+            <div className='editor-body'>
+                <Editor
+                    height='100%'
+                    defaultLanguage={name}
+                    defaultValue={defaultvalue}
+                    onMount={handleEditorMount}
+                    theme="vs-dark"
+                    onChange={onWrite}
+                    options={{
+                        minimap: { enabled: false },
+                        fontSize: 14,
+                        scrollBeyondLastLine: false,
+                        automaticLayout: true,
+                        padding: { top: 8 },
+                    }}
+                />
+            </div>
         </div>
     )
 }

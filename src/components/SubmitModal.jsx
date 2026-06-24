@@ -50,15 +50,15 @@ export default function({ref,code, successref, setisopen}){
     }
 
     return createPortal(
-        <dialog ref={ref} className="backdrop:bg-stone-900/90 bg-[rgba(11,11,11,0.8)] p-4 m-auto rounded-md shadow-md border-0 text-gray-300 relative">
-            <h2 className="text-2xl border-b-1 border-slate-600">Submit the code</h2>
-            <form ref={form} onSubmit={sendmail} className="flex flex-col gap-4 mt-4">
+        <dialog ref={ref} className="backdrop:bg-stone-900/80 backdrop:backdrop-blur-sm bg-[#0e1422]/95 p-5 m-auto rounded-xl shadow-2xl border-0 text-slate-200 relative w-[90vw] max-w-md">
+            <h2 className="text-2xl font-semibold border-b border-slate-600 pb-2">Submit the code</h2>
+            <form ref={form} onSubmit={sendmail} className="flex flex-col gap-3 mt-4">
                 <label htmlFor="name">Enter your name here</label>
                 <input name="name" type="text"
-                className="bg-[#2C2C2C] rounded-sm min-w-md px-4 py-2 border-b-3 border-transparent focus:outline-none focus:ring-0 focus:border-b-gray-500" required/>
+                className="bg-[#1b2336] rounded-lg w-full px-4 py-2 border border-white/10 focus:outline-none focus:ring-0 focus:border-indigo-400 transition-colors" required/>
                 <label htmlFor="student-id">Enter your Student'id here</label>
                 <input type="text" name="student_id"
-                className="bg-[#2C2C2C] rounded-sm min-w-md px-4 py-2 border-b-3 border-transparent focus:outline-none focus:ring-0 focus:border-b-gray-500" required/>
+                className="bg-[#1b2336] rounded-lg w-full px-4 py-2 border border-white/10 focus:outline-none focus:ring-0 focus:border-indigo-400 transition-colors" required/>
                 <input type="hidden" name="code" value={generateCode(code.html,code.css,code.js)} />
                 <div className="flex gap-2 mb-3">
                     <button className="text-white bg-[#2196F3] px-4 hover:bg-[#1976D2] py-2 rounded-md focus:border-0 min-w-22"

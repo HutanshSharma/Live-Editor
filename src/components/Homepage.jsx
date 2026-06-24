@@ -13,6 +13,30 @@ export default function Homepage() {
   const successmodal = useRef()
   const failuremodal = useRef()
   const maximageref = useRef()
+  const revealRef = useRef(null)
+
+  useEffect(() => {
+    const root = revealRef.current
+    if (!root) return
+    const els = root.querySelectorAll('.reveal')
+    if (!('IntersectionObserver' in window)) {
+      els.forEach((el) => el.classList.add('is-visible'))
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            io.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+    )
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [])
 
   useEffect(() => {
     const handler=(event)=>{
@@ -56,57 +80,58 @@ export default function Homepage() {
     <SuccessModal ref={maximageref} heading={'Error'} description={'Your storage is full remove some pictures to add more'} isopen={isopen} setisopen={setisopen} bgcolor={'failure'}/>
 
 
-    <div className="min-h-screen text-white" style={{background: 'linear-gradient(180deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%)'}}>
-      <header className="container mx-auto px-6 py-8">
+    <div className="min-h-screen text-white" style={{background: 'linear-gradient(160deg, #0a0f1c 0%, #131b2e 55%, #0f1729 100%)'}}>
+      <header className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <h1 className="bitcount-prop-single text-white text-4xl font-bold ">
-                <i className="fa-solid fa-not-equal text-2xl mr-6"></i>NoCheating</h1>
+            <h1 className="bitcount-prop-single text-white text-2xl sm:text-3xl lg:text-4xl font-bold flex items-center">
+                <i className="fa-solid fa-not-equal text-xl sm:text-2xl mr-3 sm:mr-5"></i>NoCheating</h1>
           </div>
-          <a 
+          <a
             href="https://developer.mozilla.org/en-US/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center space-x-2 text-cyan-200 hover:text-cyan-200 transition-colors"
+            className="flex items-center space-x-2 text-sky-300 hover:text-sky-200 transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
-            <span>MDN Docs</span>
+            <span className="hidden sm:inline">MDN Docs</span>
           </a>
         </div>
       </header>
-      <main className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-6xl font-bold mb-6 bg-gradient-to-r bungee-regular bg-white bg-clip-text text-transparent">
+      <main ref={revealRef} className="container mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12 sm:mb-16 fade-up">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-5 sm:mb-6 bungee-regular bg-gradient-to-r from-white via-sky-100 to-indigo-200 bg-clip-text text-transparent">
             Welcome Developers
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Experience interactive web design 
+          <p className="text-base sm:text-xl text-slate-300 mb-8 max-w-2xl mx-auto px-2">
+            Experience interactive web design
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button 
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 py-4 rounded-full text-lg font-semibold transition-all transform hover:scale-105 shadow-lg inline-block text-center"
-            onClick={()=>modal.current.showModal()}>Add Images</button>
-            <Link 
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 sm:px-0">
+            <button
+            className="group bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 px-8 py-3.5 rounded-xl text-lg font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl shadow-lg shadow-black/30 inline-flex items-center justify-center gap-2"
+            onClick={()=>modal.current.showModal()}>
+              <i className="fa-solid fa-images transition-transform duration-300 group-hover:scale-110"></i>Add Images</button>
+            <Link
               to='/codeeditor'
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 py-4 rounded-full text-lg font-semibold transition-all transform hover:scale-105 shadow-lg inline-block text-center"
+              className="group bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 px-8 py-3.5 rounded-xl text-lg font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl shadow-lg shadow-black/30 inline-flex items-center justify-center gap-2"
             >
-              Explore Now
+              Explore Now<i className="fa-solid fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
             </Link>
           </div>
         </div>
-        <div className="max-w-4xl mx-auto space-y-12 mb-16">
-          <div className="bg-[#28282d] bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 border border-[#28282d] border-opacity-20">
-            <div className="flex items-start space-x-4">
-              <FileText className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0" />
+        <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12 mb-12 sm:mb-16">
+          <div className="reveal feature-card group bg-white/5 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white/10">
+            <div className="flex items-start space-x-3 sm:space-x-4">
+              <FileText className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0 transition-transform duration-300 group-hover:scale-125" />
               <div>
-                <h3 className="text-2xl font-bold mb-4 text-blue-300">Automatic Code Structure</h3>
-                <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-blue-300">Automatic Code Structure</h3>
+                <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-6">
                   This editor doesn't require you to write boilerplate HTML structure. When you write your HTML, CSS, and JavaScript, 
                   the system automatically wraps your code in a complete HTML document with proper DOCTYPE declaration, meta tags for 
                   character encoding and viewport settings, and includes your styles and scripts in the appropriate sections.
                 </p>
-                <div className="bg-[rgba(0,0,0,0.4)] bg-opacity-40 rounded-lg p-4 font-mono text-sm">
+                <div className="bg-black/40 rounded-lg p-4 font-mono text-sm overflow-x-auto">
                   <div className="text-gray-400 mb-2">// Behind the scenes, your code becomes:</div>
                   <div className="text-cyan-300">generateCode(html, css, js)</div>
                   <div className="text-gray-400">↓</div>
@@ -115,29 +140,29 @@ export default function Homepage() {
               </div>
             </div>
           </div>
-          <div className="bg-[#28282d] bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 border border-[#28282d] border-opacity-20">
-            <div className="flex items-start space-x-4">
-              <Monitor className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0" />
+          <div className="reveal feature-card group bg-white/5 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white/10">
+            <div className="flex items-start space-x-3 sm:space-x-4">
+              <Monitor className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0 transition-transform duration-300 group-hover:scale-125" />
               <div>
-                <h3 className="text-2xl font-bold mb-4 text-blue-300">Editor Interface</h3>
-                <p className="text-gray-300 text-lg leading-relaxed mb-4">
+                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-blue-300">Editor Interface</h3>
+                <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
                   The coding interface consists of three separate code editors - one for HTML, one for CSS, and one for JavaScript. 
                   Each editor can be expanded individually to give you more space to work on that particular language. This allows 
                   you to focus on one aspect of your code at a time while still having access to all three languages.
                 </p>
-                <p className="text-gray-300 text-lg leading-relaxed">
+                <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
                   The preview area shows your code in real-time as you type, so you can immediately see how your changes affect 
                   the final output. The interface is designed to work best in full-screen mode to maximize your workspace.
                 </p>
               </div>
             </div>
           </div>
-          <div className="bg-[#28282d] bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 border border-[#28282d] border-opacity-20 border-l-4 border-l-orange-400">
-            <div className="flex items-start space-x-4">
-              <AlertCircle className="w-6 h-6 text-orange-400 mt-1 flex-shrink-0" />
+          <div className="reveal feature-card group bg-white/5 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white/10 border-l-4 border-l-orange-400">
+            <div className="flex items-start space-x-3 sm:space-x-4">
+              <AlertCircle className="w-6 h-6 text-orange-400 mt-1 flex-shrink-0 transition-transform duration-300 group-hover:scale-125" />
               <div>
-                <h3 className="text-2xl font-bold mb-4 text-orange-300">Important Usage Information</h3>
-                <div className="space-y-4 text-gray-300 text-lg leading-relaxed">
+                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-orange-300">Important Usage Information</h3>
+                <div className="space-y-4 text-gray-300 text-base sm:text-lg leading-relaxed">
                   <p>
                     <strong className="text-orange-300">Copy and Paste:</strong> The copy and paste functionality is disabled 
                     within the editor environment. You'll need to type your code directly into the editors.
@@ -154,25 +179,25 @@ export default function Homepage() {
               </div>
             </div>
           </div>
-          <div className="bg-[#28282d] bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 border border-[#28282d] border-opacity-20">
-            <div className="flex items-start space-x-4">
-              <Info className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0" />
+          <div className="reveal feature-card group bg-white/5 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white/10">
+            <div className="flex items-start space-x-3 sm:space-x-4">
+              <Info className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0 transition-transform duration-300 group-hover:scale-125" />
               <div>
-                <h3 className="text-2xl font-bold mb-4 text-blue-300">Documentation and Learning</h3>
-                <p className="text-gray-300 text-lg leading-relaxed mb-4">
+                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-blue-300">Documentation and Learning</h3>
+                <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
                   While working in the editor, you have access to MDN Web Docs through the link in the top navigation. 
                   MDN (Mozilla Developer Network) is one of the most comprehensive and reliable resources for web development 
                   documentation, covering HTML, CSS, JavaScript, and web APIs.
                 </p>
-                <p className="text-gray-300 text-lg leading-relaxed">
+                <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
                   Since you can't open developer tools within the editor, MDN docs serve as your primary reference for 
                   syntax, properties, methods, and examples while coding.
                 </p>
               </div>
             </div>
           </div>
-          <div className="bg-[#28282d] bg-opacity-5 backdrop-blur-lg rounded-2xl p-8 border border-[#28282d] border-opacity-10">
-            <h3 className="text-2xl font-bold mb-6 text-center text-blue-300">How Your Code Is Processed</h3>
+          <div className="reveal feature-card bg-white/5 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white/10">
+            <h3 className="text-xl sm:text-2xl font-bold mb-6 text-center text-blue-300">How Your Code Is Processed</h3>
             <div className="bg-[rgba(0,0,0,0.4)] bg-opacity-50 rounded-lg p-6 font-mono text-sm overflow-x-auto">
               <div className="space-y-2">
                 <div className="text-gray-400">// When you write code in the three editors:</div>
@@ -198,15 +223,21 @@ export default function Homepage() {
             </div>
           </div>
         </div>
-        <div className="text-center mb-16">
-          <h3 className="text-3xl font-bold mb-4">Ready to Start?</h3>
-          <p className="text-gray-300 mb-8 text-lg max-w-2xl mx-auto">
+        <div className="reveal text-center mb-16">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-4">Ready to Start?</h3>
+          <p className="text-gray-300 mb-8 text-base sm:text-lg max-w-2xl mx-auto">
             Now that you understand how the editor works and its limitations, you can begin creating your web page
           </p>
+          <Link
+            to='/codeeditor'
+            className="group bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 px-8 py-3.5 rounded-xl text-lg font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl shadow-lg shadow-black/30 inline-flex items-center justify-center gap-2"
+          >
+            Start Coding<i className="fa-solid fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
+          </Link>
         </div>
       </main>
-      <footer className="border-t border-white border-opacity-20 mt-16 py-8">
-        <div className="container mx-auto px-6 text-center text-gray-400">
+      <footer className="border-t border-white/10 mt-16 py-8">
+        <div className="container mx-auto px-6 text-center text-slate-400">
           <p>&copy; 2025 NoCheating. Interactive web page development environment.</p>
         </div>
       </footer>
